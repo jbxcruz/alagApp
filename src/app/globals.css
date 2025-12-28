@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --font-outfit: 'Outfit', system-ui, sans-serif;
+  --font-jetbrains: 'JetBrains Mono', monospace;
+  
+  /* Light mode colors */
+  --color-bg-base: #F8FAFC;
+  --color-bg-card: #FFFFFF;
+  --color-bg-elevated: #F1F5F9;
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94A3B8;
+  --color-border: #E2E8F0;
+}
+
+.dark {
+  /* Cool blue-tinted dark mode colors */
+  --color-bg-base: #0B1120;
+  --color-bg-card: #131C2E;
+  --color-bg-elevated: #1A2742;
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #94A3B8;
+  --color-border: #293548;
+  color-scheme: dark;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-outfit);
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  @apply antialiased;
+  overflow-x: hidden;
+}
+
+/* ===== COMPONENT CLASSES ===== */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-primary-600;
+}
+
+.number-display {
+  font-family: var(--font-jetbrains);
+  @apply tabular-nums font-medium;
+}
+
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+}
+
+.sidebar-item {
+  @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200;
+  color: var(--color-text-secondary);
+}
+
+.sidebar-item:hover {
+  background-color: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+}
+
+.sidebar-item.active {
+  @apply bg-primary-50 text-primary-600;
+}
+
+.dark .sidebar-item.active {
+  @apply bg-primary-900/30 text-primary-400;
+}
+
+.page-title {
+  @apply text-xl sm:text-2xl font-bold;
+  color: var(--color-text-primary);
+}
+
+.page-description {
+  @apply text-sm sm:text-base mt-1;
+  color: var(--color-text-secondary);
+}
+
+/* ===== CUSTOM SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-slate-600;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-500;
+}
+
+/* ===== MOBILE-SPECIFIC ===== */
+@media (max-width: 640px) {
+  .page-title {
+    @apply text-xl;
+  }
+  
+  .page-description {
+    @apply text-sm;
+  }
+}
+
+/* ===== SAFE AREA FOR IOS ===== */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* ===== TEXT OVERFLOW UTILITIES ===== */
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* ===== DARK MODE UTILITY CLASSES ===== */
+/* These custom classes provide consistent dark mode theming */
+.dark-bg-base {
+  @apply dark:bg-[#0B1120];
+}
+
+.dark-bg-card {
+  @apply dark:bg-[#131C2E];
+}
+
+.dark-bg-elevated {
+  @apply dark:bg-[#1A2742];
+}
+
+.dark-border {
+  @apply dark:border-[#293548];
+}
+
+.dark-text-primary {
+  @apply dark:text-slate-100;
+}
+
+.dark-text-secondary {
+  @apply dark:text-slate-300;
+}
+
+.dark-text-muted {
+  @apply dark:text-slate-400;
+}
