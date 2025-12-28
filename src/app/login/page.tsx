@@ -2,9 +2,9 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Eye, EyeOff, Mail, Lock, CheckCircle, Loader2 } from 'lucide-react';
+import Image from 'next/image';
 import { Button, Input, Card } from '@/components/ui';
 import { createClient } from '@/lib/supabase/client';
 
@@ -54,7 +54,8 @@ function LoginContent() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120] flex">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120] flex overflow-x-hidden w-full">
+      {/* Left - Branding */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-500 to-primary-600 relative overflow-hidden">
         <div className="relative z-10 flex flex-col justify-between p-12 text-white">
           <Link href="/" className="flex items-center gap-3">
@@ -69,7 +70,8 @@ function LoginContent() {
         </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center p-8">
+      {/* Right - Form */}
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8 w-full">
         <div className="w-full max-w-md">
           <div className="lg:hidden mb-8 text-center">
             <Link href="/" className="inline-flex items-center gap-2">
@@ -123,11 +125,7 @@ function LoginContent() {
                     onChange={(e) => setPassword(e.target.value)}
                     required 
                   />
-                  <button 
-                    type="button" 
-                    onClick={() => setShowPassword(!showPassword)} 
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                  >
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
@@ -146,10 +144,7 @@ function LoginContent() {
           </Card>
 
           <p className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
-            Don&apos;t have an account?{' '}
-            <Link href="/register" className="text-primary-500 hover:text-primary-600 font-medium">
-              Sign up
-            </Link>
+            Don&apos;t have an account? <Link href="/register" className="text-primary-500 hover:text-primary-600 font-medium">Sign up</Link>
           </p>
         </div>
       </div>

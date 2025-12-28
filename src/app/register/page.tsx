@@ -66,8 +66,9 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120] flex">
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-500 to-primary-600 relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120] flex overflow-x-hidden w-full">
+      {/* Left - Branding */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-500 to-primary-600 relative overflow-hidden">
         <div className="relative z-10 flex flex-col justify-between p-12 text-white">
           <Link href="/" className="flex items-center gap-3">
             <Image src="/logo.svg" alt="AlagApp Logo" width={40} height={40} className="rounded-xl" />
@@ -81,7 +82,8 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center p-8">
+      {/* Right - Form */}
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8 w-full">
         <div className="w-full max-w-md">
           <div className="lg:hidden mb-8 text-center">
             <Link href="/" className="inline-flex items-center gap-2">

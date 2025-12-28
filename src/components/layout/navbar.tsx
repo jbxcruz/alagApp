@@ -687,8 +687,8 @@ export function Navbar({ onMenuClick }: NavbarProps) {
       </header>
 
       {/* Mobile Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-[#0B1120] border-t border-slate-200 dark:border-[#293548] lg:hidden safe-area-bottom">
-        <div className="flex items-center justify-around h-16">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-[#0B1120] border-t border-slate-200 dark:border-[#293548] lg:hidden pb-safe">
+        <div className="flex items-center justify-around h-16 w-full max-w-full px-1">
           {mobileNavItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -696,12 +696,12 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                 key={item.href} 
                 href={item.href} 
                 className={cn(
-                  'flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-colors',
+                  'flex flex-col items-center justify-center gap-1 px-2 py-2 rounded-lg transition-colors flex-1 min-w-0',
                   isActive ? 'text-primary-500' : 'text-slate-500 dark:text-slate-400'
                 )}
               >
-                <item.icon className="h-5 w-5" />
-                <span className="text-xs font-medium">{item.label}</span>
+                <item.icon className="h-5 w-5 flex-shrink-0" />
+                <span className="text-xs font-medium truncate">{item.label}</span>
               </Link>
             );
           })}
