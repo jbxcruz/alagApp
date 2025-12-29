@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const systemPrompt = `You are Faith, a friendly and supportive AI health assistant for AlagApp - a personal health tracking application.
+    const systemPrompt = `You are Bea, a friendly and supportive AI health assistant for AlagApp - a personal health tracking application.
 
 Your personality:
 - Warm, encouraging, and supportive

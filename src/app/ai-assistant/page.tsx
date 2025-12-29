@@ -370,7 +370,7 @@ export default function AIAssistantPage() {
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center">
                 <Cross className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              Faith
+              Bea
             </h1>
             <p className="text-sm sm:text-base text-gray-500 dark:text-slate-400 mt-1">Your AI Health Companion</p>
           </div>
@@ -493,7 +493,7 @@ export default function AIAssistantPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium"
-                  title="Faith is recharging"
+                  title="Bea is recharging"
                 >
                   <Clock className="w-4 h-4" />
                   <span className="tabular-nums">{formatCountdown(rateLimitCountdown)}</span>
@@ -593,7 +593,7 @@ export default function AIAssistantPage() {
                     <Cross className="w-10 h-10 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    Hi, I&apos;m Faith! 👋
+                    Hi, I&apos;m Bea! 👋
                   </h3>
                   <p className="text-gray-500 dark:text-slate-400 mb-6 max-w-md">
                     I&apos;m your personal health companion. Ask me anything about health, 
@@ -663,7 +663,7 @@ export default function AIAssistantPage() {
                       <div className="bg-gray-100 rounded-2xl px-4 py-3">
                         <div className="flex items-center gap-2">
                           <Loader2 className="w-4 h-4 animate-spin text-gray-500 dark:text-slate-400" />
-                          <span className="text-sm text-gray-500 dark:text-slate-400">Faith is thinking...</span>
+                          <span className="text-sm text-gray-500 dark:text-slate-400">Bea is thinking...</span>
                         </div>
                       </div>
                     </motion.div>
@@ -681,7 +681,7 @@ export default function AIAssistantPage() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={rateLimitCountdown > 0 ? `Recharging (${formatCountdown(rateLimitCountdown)})...` : "Ask Faith anything..."}
+                  placeholder={rateLimitCountdown > 0 ? `Recharging (${formatCountdown(rateLimitCountdown)})...` : "Ask Bea anything..."}
                   className={cn(
                     "flex-1 px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm sm:text-base",
                     rateLimitCountdown > 0 && "bg-gray-50 text-gray-400 dark:text-slate-500"
@@ -701,7 +701,7 @@ export default function AIAssistantPage() {
                 </Button>
               </div>
               <p className="text-xs text-gray-400 mt-2 text-center hidden sm:block">
-                Faith provides health information only. Always consult a healthcare professional for medical advice.
+                Bea provides health information only. Always consult a healthcare professional for medical advice.
               </p>
             </div>
           </Card>
