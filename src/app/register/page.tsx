@@ -12,7 +12,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [fullName, setFullName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -28,6 +29,12 @@ export default function RegisterPage() {
       return;
     }
 
+    if (!firstName.trim()) {
+      setError('First name is required');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const supabase = createClient();
       const { data, error: authError } = await supabase.auth.signUp({
@@ -35,7 +42,9 @@ export default function RegisterPage() {
         password,
         options: {
           data: {
-            full_name: fullName,
+            first_name: firstName.trim(),
+            last_name: lastName.trim(),
+            full_name: `${firstName.trim()} ${lastName.trim()}`.trim(),
           },
         },
       });
@@ -47,6 +56,16 @@ export default function RegisterPage() {
       }
 
       if (data.user) {
+        // Update the profile with first_name and last_name
+        await supabase
+          .from('profiles')
+          .update({
+            first_name: firstName.trim(),
+            last_name: lastName.trim(),
+            full_name: `${firstName.trim()} ${lastName.trim()}`.trim(),
+          })
+          .eq('id', data.user.id);
+
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -104,17 +123,28 @@ export default function RegisterPage() {
           )}
 
           <Card padding="lg">
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Full Name</label>
-                <Input 
-                  type="text" 
-                  placeholder="John Doe" 
-                  leftIcon={<User className="h-4 w-4" />} 
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  required 
-                />
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">First Name</label>
+                  <Input 
+                    type="text" 
+                    placeholder="John" 
+                    leftIcon={<User className="h-4 w-4" />} 
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Last Name</label>
+                  <Input 
+                    type="text" 
+                    placeholder="Doe" 
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email</label>

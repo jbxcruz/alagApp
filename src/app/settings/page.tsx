@@ -68,17 +68,17 @@ const settingsSections = [
       { icon: Heart, label: 'Emergency Card', description: 'Set up your emergency health info', action: 'emergency', danger: false },
     ],
   },
-    {
-    title: 'About',
-    items: [
-      { icon: Info, label: 'About AlagApp', description: 'Learn more about the app and credits', action: 'about', danger: false },
-    ],
-  },
   {
     title: 'Data',
     items: [
       { icon: Download, label: 'Export Data', description: 'Download all your health data', action: 'export', danger: false },
       { icon: Trash2, label: 'Delete Account', description: 'Permanently delete your account', action: 'delete', danger: true },
+    ],
+  },
+  {
+    title: 'About',
+    items: [
+      { icon: Info, label: 'About AlagApp', description: 'Learn more about the app and credits', action: 'about', danger: false },
     ],
   },
 ];
@@ -118,14 +118,22 @@ export default function SettingsPage() {
   const [deleteProgress, setDeleteProgress] = useState<string[]>([]);
   const [deleteError, setDeleteError] = useState('');
 
-  // Initialize dark mode from localStorage/system preference
+  // Initialize dark mode from localStorage only (default to light mode)
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains('dark') ||
-      localStorage.getItem('darkMode') === 'true' ||
-      (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    setDarkMode(isDark);
-    if (isDark) {
+    // Always remove dark class first to ensure light mode is default
+    document.documentElement.classList.remove('dark');
+    
+    const savedDarkMode = localStorage.getItem('darkMode');
+    // Only enable dark mode if explicitly set to 'true' in localStorage
+    if (savedDarkMode === 'true') {
+      setDarkMode(true);
       document.documentElement.classList.add('dark');
+    } else {
+      setDarkMode(false);
+      // Ensure light mode is set in localStorage if not already set
+      if (savedDarkMode !== 'false') {
+        localStorage.setItem('darkMode', 'false');
+      }
     }
   }, []);
 

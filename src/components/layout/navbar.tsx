@@ -53,15 +53,42 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
+  const [userInitials, setUserInitials] = useState<string>('U');
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
   const [readIds, setReadIds] = useState<Set<string>>(new Set());
   const profileMenuRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
 
+  // Initialize dark mode from localStorage (default to light mode)
+  useEffect(() => {
+    // Always remove dark class first to ensure light mode is default
+    document.documentElement.classList.remove('dark');
+    
+    const savedDarkMode = localStorage.getItem('darkMode');
+    // Only enable dark mode if explicitly set to 'true' in localStorage
+    if (savedDarkMode === 'true') {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark');
+    } else {
+      setIsDarkMode(false);
+      // Ensure light mode is set in localStorage if not already set
+      if (savedDarkMode !== 'false') {
+        localStorage.setItem('darkMode', 'false');
+      }
+    }
+  }, []);
+
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('darkMode', 'false');
+    }
   };
 
   // Load notifications from localStorage
@@ -104,14 +131,28 @@ export function Navbar({ onMenuClick }: NavbarProps) {
       if (user) {
         const { data: profile } = await supabase
           .from('profiles')
-          .select('full_name')
+          .select('first_name, last_name, full_name')
           .eq('id', user.id)
           .single();
         
-        if (profile?.full_name) {
-          setUserName(profile.full_name);
+        if (profile?.first_name) {
+          // New schema with first_name, last_name
+          setUserName(profile.first_name);
+          // Generate initials: first letter of first name + first letter of last name (if exists)
+          const firstInitial = profile.first_name.charAt(0).toUpperCase();
+          const lastInitial = profile.last_name ? profile.last_name.charAt(0).toUpperCase() : '';
+          setUserInitials(lastInitial ? `${firstInitial}${lastInitial}` : firstInitial);
+        } else if (profile?.full_name) {
+          // Legacy schema with full_name
+          const nameParts = profile.full_name.split(' ');
+          setUserName(nameParts[0]); // First name only
+          // Generate initials from full_name
+          const firstInitial = nameParts[0].charAt(0).toUpperCase();
+          const lastInitial = nameParts.length > 1 ? nameParts[nameParts.length - 1].charAt(0).toUpperCase() : '';
+          setUserInitials(lastInitial ? `${firstInitial}${lastInitial}` : firstInitial);
         } else {
           setUserName(user.email?.split('@')[0] || 'User');
+          setUserInitials('U');
         }
       }
     };
@@ -642,12 +683,12 @@ export function Navbar({ onMenuClick }: NavbarProps) {
             </div>
             
             {/* Profile Dropdown */}
-            <div className="relative" ref={profileMenuRef}>
+            <div className="relative mr-3 sm:mr-4" ref={profileMenuRef}>
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-[#1A2742] transition-colors"
               >
-                <Avatar fallback={userName || 'User'} size="sm" />
+                <Avatar fallback={userInitials} size="sm" />
               </button>
               
               {showProfileMenu && (
@@ -687,8 +728,8 @@ export function Navbar({ onMenuClick }: NavbarProps) {
       </header>
 
       {/* Mobile Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-[#0B1120] border-t border-slate-200 dark:border-[#293548] lg:hidden pb-safe">
-        <div className="flex items-center justify-around h-16 w-full max-w-full px-1">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-[#0B1120] border-t border-slate-200 dark:border-[#293548] lg:hidden">
+        <div className="flex items-center justify-around h-14 w-full max-w-full px-1 mb-3">
           {mobileNavItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -696,16 +737,18 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                 key={item.href} 
                 href={item.href} 
                 className={cn(
-                  'flex flex-col items-center justify-center gap-1 px-2 py-2 rounded-lg transition-colors flex-1 min-w-0',
+                  'flex flex-col items-center justify-center gap-0.5 px-2 py-1.5 rounded-lg transition-colors flex-1 min-w-0',
                   isActive ? 'text-primary-500' : 'text-slate-500 dark:text-slate-400'
                 )}
               >
                 <item.icon className="h-5 w-5 flex-shrink-0" />
-                <span className="text-xs font-medium truncate">{item.label}</span>
+                <span className="text-[10px] font-medium truncate">{item.label}</span>
               </Link>
             );
           })}
         </div>
+        {/* Safe area spacer for iOS */}
+        <div className="pb-safe" />
       </nav>
     </>
   );
