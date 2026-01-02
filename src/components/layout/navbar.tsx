@@ -137,19 +137,30 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         
         if (profile?.first_name) {
           // New schema with first_name, last_name
+          // Display full first_name (e.g., "John Bert")
           setUserName(profile.first_name);
-          // Generate initials: first letter of first name + first letter of last name (if exists)
+          
+          // Generate initials: first letter of first_name + first letter of last_name
+          // e.g., "John Bert" + "Cruz" = "JC"
           const firstInitial = profile.first_name.charAt(0).toUpperCase();
           const lastInitial = profile.last_name ? profile.last_name.charAt(0).toUpperCase() : '';
           setUserInitials(lastInitial ? `${firstInitial}${lastInitial}` : firstInitial);
         } else if (profile?.full_name) {
-          // Legacy schema with full_name
-          const nameParts = profile.full_name.split(' ');
-          setUserName(nameParts[0]); // First name only
-          // Generate initials from full_name
-          const firstInitial = nameParts[0].charAt(0).toUpperCase();
-          const lastInitial = nameParts.length > 1 ? nameParts[nameParts.length - 1].charAt(0).toUpperCase() : '';
-          setUserInitials(lastInitial ? `${firstInitial}${lastInitial}` : firstInitial);
+          // Legacy schema with full_name (e.g., "John Bert Cruz")
+          const nameParts = profile.full_name.trim().split(' ');
+          if (nameParts.length >= 2) {
+            // Show all except last part as display name (e.g., "John Bert")
+            const displayName = nameParts.slice(0, -1).join(' ');
+            setUserName(displayName);
+            // Initials: first letter + last name's first letter (e.g., "JC")
+            const firstInitial = nameParts[0].charAt(0).toUpperCase();
+            const lastInitial = nameParts[nameParts.length - 1].charAt(0).toUpperCase();
+            setUserInitials(`${firstInitial}${lastInitial}`);
+          } else {
+            // Only one name
+            setUserName(nameParts[0]);
+            setUserInitials(nameParts[0].charAt(0).toUpperCase());
+          }
         } else {
           setUserName(user.email?.split('@')[0] || 'User');
           setUserInitials('U');
@@ -683,7 +694,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
             </div>
             
             {/* Profile Dropdown */}
-            <div className="relative mr-3 sm:mr-4" ref={profileMenuRef}>
+            <div className="relative mr-5 sm:mr-6" ref={profileMenuRef}>
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-[#1A2742] transition-colors"
@@ -729,7 +740,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
 
       {/* Mobile Bottom Nav */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-[#0B1120] border-t border-slate-200 dark:border-[#293548] lg:hidden">
-        <div className="flex items-center justify-around h-14 w-full max-w-full px-1 mb-3">
+        <div className="flex items-center justify-around h-14 w-full max-w-full px-1 mb-5">
           {mobileNavItems.map((item) => {
             const isActive = pathname === item.href;
             return (

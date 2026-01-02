@@ -129,7 +129,7 @@ export default function RegisterPage() {
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">First Name</label>
                   <Input 
                     type="text" 
-                    placeholder="John" 
+                    placeholder="John Bert" 
                     leftIcon={<User className="h-4 w-4" />} 
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
@@ -140,9 +140,10 @@ export default function RegisterPage() {
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Last Name</label>
                   <Input 
                     type="text" 
-                    placeholder="Doe" 
+                    placeholder="Cruz" 
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                    required
                   />
                 </div>
               </div>
