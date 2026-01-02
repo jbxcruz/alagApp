@@ -12,7 +12,12 @@ interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
 export function Avatar({ className, src, fallback, size = 'md', ...props }: AvatarProps) {
   const [error, setError] = React.useState(false);
   const sizes = { sm: 'h-8 w-8 text-xs', md: 'h-10 w-10 text-sm', lg: 'h-12 w-12 text-base', xl: 'h-16 w-16 text-lg' };
-  const initials = fallback?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  
+  // If fallback is already short (1-2 chars), use it directly as initials
+  // Otherwise, generate initials from the name
+  const initials = fallback && fallback.length <= 2 
+    ? fallback.toUpperCase() 
+    : fallback?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 
   return (
     <div className={cn('relative flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-100 dark:bg-primary-900/30', sizes[size], className)} {...props}>
