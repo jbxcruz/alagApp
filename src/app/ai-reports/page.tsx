@@ -264,7 +264,7 @@ export default function AIReportsPage() {
           </div>
           <div>
             <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">AI Health Reports</h1>
-            <p className="text-sm text-gray-500 dark:text-slate-400 hidden md:block">Personalized insights from Faith AI</p>
+            <p className="text-sm text-gray-500 dark:text-slate-400 hidden md:block">Personalized insights from Bea AI</p>
           </div>
         </div>
         {pastReports.length > 0 && (
@@ -427,7 +427,7 @@ export default function AIReportsPage() {
                 </div>
                 <h3 className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-3">No Report Yet</h3>
                 <p className="text-gray-500 dark:text-slate-400 max-w-md mb-6 text-sm md:text-base">
-                  Select a time period and click &quot;Generate Report&quot; to get personalized health insights from Faith AI.
+                  Select a time period and click &quot;Generate Report&quot; to get personalized health insights from Bea AI.
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {dataCategories.slice(0, 5).map((cat) => (

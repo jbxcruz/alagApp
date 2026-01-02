@@ -536,7 +536,7 @@ export default function DashboardPage() {
                 <Link href="/ai-assistant">
                   <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-sky-50 dark:hover:bg-sky-900/20 transition-colors cursor-pointer group">
                     <div className="w-10 h-10 bg-primary-50 dark:bg-primary-900/20 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-primary-900/30"><Bot className="w-5 h-5 text-primary-500" /></div>
-                    <div className="flex-1"><p className="text-sm font-medium text-gray-900 dark:text-white">AI Assistant</p><p className="text-xs text-gray-500 dark:text-slate-400">Chat with Faith</p></div>
+                    <div className="flex-1"><p className="text-sm font-medium text-gray-900 dark:text-white">AI Assistant</p><p className="text-xs text-gray-500 dark:text-slate-400">Chat with Bea</p></div>
                     <ChevronRight className="w-4 h-4 text-gray-300 dark:text-slate-500" />
                   </div>
                 </Link>
