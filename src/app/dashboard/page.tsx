@@ -106,7 +106,7 @@ export default function DashboardPage() {
 
       const { data: profile } = await supabase
         .from('profiles')
-        .select('full_name')
+        .select('first_name, last_name, full_name')
         .eq('id', user.id)
         .single();
 
@@ -200,7 +200,7 @@ export default function DashboardPage() {
 
       setData({
         user: {
-          name: profile?.full_name || user.email?.split('@')[0] || 'User',
+          name: profile?.first_name || profile?.full_name?.split(' ')[0] || user.email?.split('@')[0] || 'User',
           email: user.email || '',
         },
         vitals: {
@@ -267,7 +267,7 @@ export default function DashboardPage() {
               {formatDate()} <span className="text-gray-400 dark:text-slate-500">·</span> <span className="tabular-nums">{formatTime(currentTime)}</span>
             </p>
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-              {getGreeting()}, {data?.user?.name?.split(' ')[0] || 'there'}
+              {getGreeting()}, {data?.user?.name || 'there'}
             </h1>
           </div>
           
