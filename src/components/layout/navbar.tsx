@@ -53,7 +53,8 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
-  const [userInitials, setUserInitials] = useState<string>('U');
+  const [userInitials, setUserInitials] = useState<string>('');
+  const [isProfileLoading, setIsProfileLoading] = useState(true);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
   const [readIds, setReadIds] = useState<Set<string>>(new Set());
@@ -125,6 +126,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   // Fetch user profile
   useEffect(() => {
     const fetchUserProfile = async () => {
+      setIsProfileLoading(true);
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       
@@ -163,9 +165,10 @@ export function Navbar({ onMenuClick }: NavbarProps) {
           }
         } else {
           setUserName(user.email?.split('@')[0] || 'User');
-          setUserInitials('U');
+          setUserInitials(user.email?.charAt(0).toUpperCase() || 'U');
         }
       }
+      setIsProfileLoading(false);
     };
 
     fetchUserProfile();
@@ -699,7 +702,11 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-[#1A2742] transition-colors"
               >
-                <Avatar fallback={userInitials} size="sm" />
+                {isProfileLoading ? (
+                  <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse" />
+                ) : (
+                  <Avatar fallback={userInitials || 'U'} size="sm" />
+                )}
               </button>
               
               {showProfileMenu && (
