@@ -138,28 +138,38 @@ export function Navbar({ onMenuClick }: NavbarProps) {
           .single();
         
         if (profile?.first_name) {
-          // New schema with first_name, last_name
           // Display full first_name (e.g., "John Bert")
           setUserName(profile.first_name);
           
-          // Generate initials: first letter of first_name + first letter of last_name
-          // e.g., "John Bert" + "Cruz" = "JC"
-          const firstInitial = profile.first_name.charAt(0).toUpperCase();
-          const lastInitial = profile.last_name ? profile.last_name.charAt(0).toUpperCase() : '';
-          setUserInitials(lastInitial ? `${firstInitial}${lastInitial}` : firstInitial);
+          // Generate initials from first_name words
+          // e.g., "John Bert" = "JB", "John" = "J", "Mary Jane Rose" = "MJ"
+          const firstNameParts = profile.first_name.trim().split(' ');
+          if (firstNameParts.length >= 2) {
+            // Two or more words: first letter of first word + first letter of second word
+            const firstInitial = firstNameParts[0].charAt(0).toUpperCase();
+            const secondInitial = firstNameParts[1].charAt(0).toUpperCase();
+            setUserInitials(`${firstInitial}${secondInitial}`);
+          } else {
+            // Single word: just first letter
+            setUserInitials(firstNameParts[0].charAt(0).toUpperCase());
+          }
         } else if (profile?.full_name) {
           // Legacy schema with full_name (e.g., "John Bert Cruz")
           const nameParts = profile.full_name.trim().split(' ');
-          if (nameParts.length >= 2) {
-            // Show all except last part as display name (e.g., "John Bert")
+          if (nameParts.length >= 3) {
+            // Three+ words: assume first two are first name, rest is last name
+            // Display: "John Bert", Initials: "JB"
             const displayName = nameParts.slice(0, -1).join(' ');
             setUserName(displayName);
-            // Initials: first letter + last name's first letter (e.g., "JC")
             const firstInitial = nameParts[0].charAt(0).toUpperCase();
-            const lastInitial = nameParts[nameParts.length - 1].charAt(0).toUpperCase();
-            setUserInitials(`${firstInitial}${lastInitial}`);
+            const secondInitial = nameParts[1].charAt(0).toUpperCase();
+            setUserInitials(`${firstInitial}${secondInitial}`);
+          } else if (nameParts.length === 2) {
+            // Two words: "John Cruz" -> Display: "John", Initials: "J"
+            setUserName(nameParts[0]);
+            setUserInitials(nameParts[0].charAt(0).toUpperCase());
           } else {
-            // Only one name
+            // Single word
             setUserName(nameParts[0]);
             setUserInitials(nameParts[0].charAt(0).toUpperCase());
           }
