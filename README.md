@@ -127,7 +127,7 @@ Create `.env.local`:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-GEMINI_API_KEY=your-gemini-api-key
+OPENROUTER_API_KEY=your-gemini-api-key
 ```
 
 ## 📄 License
